@@ -5,7 +5,6 @@ describe('PostsService', () => {
   const post: Omit<Post, 'id' | 'date'> = {
     text: 'Mocked post',
   };
-  let preExistingPost: Post;
 
   beforeEach(async () => {
     postsService = new PostsService();
@@ -15,14 +14,16 @@ describe('PostsService', () => {
 
   it('should add a new post', () => {
     // реализуйте тест-кейс
-    const post: Omit<Post, 'id' | 'date'> = {
-      text: 'Mocked post',
-    };
+    const createdPost = postsService.create(post);
+
+    expect(postsService.find(createdPost.id)).toEqual(createdPost);
   });
 
   it('should find a post', () => {
     // реализуйте тест-кейс
-    const post = postsService.find(preExistingPost.id);
-    expect(post?.text).toEqual(preExistingPost.text);
+    const createdPost = postsService.create(post);
+    const foundPost = postsService.find(createdPost.id);
+
+    expect(foundPost).toMatchObject(post);
   });
 });
